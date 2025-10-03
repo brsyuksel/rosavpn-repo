@@ -1,0 +1,13 @@
+name: "get package list"
+
+outputs:
+  packages:
+    value: ${{ steps.get_package_list.outputs.packages }}
+runs:
+  using: "composite"
+  steps:
+    - name: "get package list"
+      id: get_package_list
+      run: |
+        packages=`cat packages.json | jq 'keys' -c`
+        echo "packages=$packages" >> $GITHUB_OUTPUT

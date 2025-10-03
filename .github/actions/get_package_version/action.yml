@@ -1,0 +1,17 @@
+name: "get package version"
+
+inputs:
+  package:
+    type: string
+    required: true
+outputs:
+  version:
+    value: ${{ steps.get_version.outputs.version }}
+runs:
+  using: "composite"
+  steps:
+    - name: "get package version"
+      id: get_package_version
+      run: |
+          version=`cat packages.json | jq ."${{ inputs.package }}"`
+          echo "version=$version" >> $GITHUB_OUTPUT

@@ -1,0 +1,40 @@
+name: "pull request tests"
+
+on:
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  packages:
+    runs-on: ubuntu-latest
+    outputs:
+      packages: ${{ steps.get_package_list.outputs.packages }}
+    steps:
+      - name: "checkout"
+        uses: actions/checkout@v4
+
+      - name: "get package list"
+        id: get_package_list
+        uses: ./.github/actions/get_package_list
+
+  test_packages:
+    needs: packages
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        package: ${{ fromJson(needs.packages.outputs.packages) }}
+        arch: [amd64, arm64]
+    steps:
+      - name: "checkout"
+        uses: actions/checkout@v4
+
+      - name: "get package version"
+        id: get_version
+        uses: ./.github/actions/get_package_version
+        with:
+          package: ${{ matrix.package }}
+      
+      - name: "test"
+        run: |
+          ./main.sh test --package ${{ matrix.package }} --version ${{ steps.get_version.outputs.version }} --arch ${{ matrix.arch }}
