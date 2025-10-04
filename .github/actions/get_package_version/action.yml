@@ -6,7 +6,7 @@ inputs:
     required: true
 outputs:
   version:
-    value: ${{ steps.get_version.outputs.version }}
+    value: ${{ steps.get_package_version.outputs.version }}
 runs:
   using: "composite"
   steps:
