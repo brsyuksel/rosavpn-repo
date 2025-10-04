@@ -54,31 +54,11 @@ jobs:
         with:
           path: artifacts
 
-      - name: "create release tag"
-        id: tag
-        run: |
-          TAG="$(date +'%Y%m%d-%H%M%S')"
-          echo "TAG=$TAG" >> $GITHUB_ENV
-      
-      - name: "create github release"
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: "create release"
+        uses: ncipollo/release-action@v1
         with:
-          tag_name: ${{ env.TAG }}
-          release_name: "Release ${{ env.TAG }}"
+          artifacts: artifacts/**
           body: "Static compiled packages"
-          draft: false
-          prerelease: false
-      
-      - name: "upload release assets"
-        run: |
-          for file in artifacts/**/*; do
-            if [[ -f "$file" ]]; then
-              echo "Uploading $file..."
-              gh release upload ${{ env.TAG }} "$file" --clobber
-            fi
-          done
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          name: ${{ env.TAG }}
+          tag: ${{ env.TAG }}
+          token: ${{ secrets.GH_TOKEN }}
