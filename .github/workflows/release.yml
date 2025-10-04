@@ -46,13 +46,20 @@ jobs:
           path: packages/${{ matrix.package }}/*.tar.gz
   
   create_release:
-    needs: packages
+    needs: build_packages
     runs-on: ubuntu-latest
     steps:
       - name: "download all artifacts"
         uses: actions/download-artifact@v4
         with:
           path: artifacts
+
+      - name: "generate release tag"
+        id: tag
+        run: |
+          TAG_NAME="release-$(date +'%Y%m%d-%H%M%S')"
+          echo "TAG=${TAG_NAME}" >> $GITHUB_ENV
+        shell: bash
 
       - name: "create release"
         uses: ncipollo/release-action@v1
@@ -61,4 +68,4 @@ jobs:
           body: "Static compiled packages"
           name: ${{ env.TAG }}
           tag: ${{ env.TAG }}
-          token: ${{ secrets.GH_TOKEN }}
+          token: ${{ secrets.GITHUB_TOKEN }}
