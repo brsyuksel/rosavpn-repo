@@ -1,6 +1,6 @@
 # rosavpn-repo
 
-serves as a couple of pipeline for testing and releasing statically compiled variations within a date based tags. 
+provides pipelines for testing and releasing statically compiled builds tagged by date.
 
 see releases and binaries: [releases](https://github.com/brsyuksel/rosavpn-repo/releases)
 
