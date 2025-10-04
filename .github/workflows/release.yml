@@ -57,7 +57,7 @@ jobs:
       - name: "generate release tag"
         id: tag
         run: |
-          TAG_NAME="release-$(date +'%Y%m%d-%H%M%S')"
+          TAG_NAME="$(date +'%y%m%d.%H%M')"
           echo "TAG=${TAG_NAME}" >> $GITHUB_ENV
         shell: bash
 
