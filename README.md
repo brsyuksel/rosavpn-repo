@@ -1,33 +1,20 @@
-# steps
+# rosavpn-repo
 
-- versions.csv
-- workflows
-- readme
-- gitignore
-- packages
-	+ dnsmasq
-	+ tor
-	+ udp2raw
-	+ wghttp
+serves as a couple of pipeline for testing and releasing statically compiled variations within a date based tags. 
 
-## package
+see releases and binaries: [releases](https://github.com/brsyuksel/rosavpn-repo/releases)
 
-- scripts
-	- get source for given version [getsrc.sh]
-	- install dependencies (debian only) [deps.sh]
-	- compile as static [compile.sh]
-	- tests [tests.sh]
-	- ready to package [dist.sh]
+## development
 
-## workflows
+### requirements
 
-- get version for packages
-- run scripts for each arch: amd64, arm64
-	- get source
-	- install deps
-	- compile as static
-	- tests
-    - dist
-- package it
-- version and release, add assets.
-- index it in gh-pages
+ubuntu:
+```
+sudo apt install -y build-essentail
+```
+
+install act: [act repository](https://github.com/nektos/act)
+
+### events
+
+trigger the release workflow by `act push`, for pr workflow run `act pull_request`
