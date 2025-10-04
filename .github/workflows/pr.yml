@@ -24,7 +24,7 @@ jobs:
       fail-fast: false
       matrix:
         package: ${{ fromJson(needs.packages.outputs.packages) }}
-        arch: [amd64, arm64]
+        arch: [amd64]
     steps:
       - name: "checkout"
         uses: actions/checkout@v4
