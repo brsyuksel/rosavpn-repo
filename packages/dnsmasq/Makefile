@@ -26,7 +26,6 @@ run_test:
 	cd dnsmasq && ./src/dnsmasq --help
 
 dist:
-	@echo "packaging..."
 	@mkdir -v dist
 	@cp -v dnsmasq.conf dist/dnsmasq.conf
 	@cp -v dnsmasq/src/dnsmasq dist/dnsmasq
