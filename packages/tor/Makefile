@@ -16,8 +16,8 @@ get_source:
 	@cd tor && git checkout $(VERSION)
 
 sys_deps:
-	@apt update
-	@apt install -y build-essential autotools-dev automake
+	@sudo apt update
+	@sudo apt install -y build-essential autotools-dev automake
 
 dep_openssl:
 	# openssl 1.1.1w
