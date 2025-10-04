@@ -30,4 +30,4 @@ jobs:
     with:
       packages: ${{ needs.packages.outputs.packages }}
       arch: arm64
-      runner: ubuntu-latest-arm64
+      runner: ubuntu-22.04-arm
