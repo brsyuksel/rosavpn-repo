@@ -35,11 +35,6 @@ jobs:
         with:
           package: ${{ matrix.package }}
       
-      - name: "install system dependencies"
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y build-essential jq autotools-dev
-      
       - name: "test"
         run: |
           ./main.sh test --package ${{ matrix.package }} --version ${{ steps.get_version.outputs.version }} --arch ${{ matrix.arch }}
