@@ -17,24 +17,17 @@ jobs:
         id: get_package_list
         uses: ./.github/actions/get_package_list
 
-  test_packages:
+  test_packages_amd64:
     needs: packages
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        package: ${{ fromJson(needs.packages.outputs.packages) }}
-        arch: [amd64]
-    steps:
-      - name: "checkout"
-        uses: actions/checkout@v4
-
-      - name: "get package version"
-        id: get_version
-        uses: ./.github/actions/get_package_version
-        with:
-          package: ${{ matrix.package }}
-      
-      - name: "test"
-        run: |
-          ./main.sh test --package ${{ matrix.package }} --version ${{ steps.get_version.outputs.version }} --arch ${{ matrix.arch }}
+    uses: ./.github/workflows/test_packages.yml
+    with:
+      packages: ${{ needs.packages.outputs.packages }}
+      arch: amd64
+  
+  test_packages_arm64:
+    needs: packages
+    uses: ./.github/workflows/test_packages.yml
+    with:
+      packages: ${{ needs.packages.outputs.packages }}
+      arch: arm64
+      runner: ubuntu-latest-arm64
