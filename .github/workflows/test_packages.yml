@@ -1,0 +1,36 @@
+name: "test packages"
+
+on:
+  workflow_call:
+    inputs:
+      packages:
+        type: string
+        required: true
+      arch:
+        type: string
+        required: true
+      runner:
+        type: string
+        required: false
+        default: 'ubuntu-latest'
+
+jobs:
+  test_packages:
+    runs-on: ${{ inputs.runner }}
+    strategy:
+      fail-fast: false
+      matrix:
+        package: ${{ fromJson(inputs.packages) }}
+    steps:
+      - name: "checkout"
+        uses: actions/checkout@v4
+
+      - name: "get package version"
+        id: get_version
+        uses: ./.github/actions/get_package_version
+        with:
+          package: ${{ matrix.package }}
+      
+      - name: "test"
+        run: |
+          ./main.sh test --package ${{ matrix.package }} --version ${{ steps.get_version.outputs.version }} --arch ${{ inputs.arch }}
