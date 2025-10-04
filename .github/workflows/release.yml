@@ -68,4 +68,4 @@ jobs:
           body: "Static compiled packages"
           name: ${{ env.TAG }}
           tag: ${{ env.TAG }}
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.GH_TOKEN }}
