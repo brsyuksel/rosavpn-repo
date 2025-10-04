@@ -16,7 +16,7 @@ get_source:
 	@cd dnsmasq && git checkout $(VERSION)
 
 dependencies:
-	@asudo pt update
+	@sudo pt update
 	@sudo apt install -y build-essential
 
 compile:
