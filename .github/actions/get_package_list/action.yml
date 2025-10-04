@@ -8,6 +8,7 @@ runs:
   steps:
     - name: "get package list"
       id: get_package_list
+      shell: bash
       run: |
         packages=`cat packages.json | jq 'keys' -c`
         echo "packages=$packages" >> $GITHUB_OUTPUT

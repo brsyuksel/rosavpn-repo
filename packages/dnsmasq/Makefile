@@ -16,8 +16,8 @@ get_source:
 	@cd dnsmasq && git checkout $(VERSION)
 
 dependencies:
-	@apt update
-	@apt install -y build-essential
+	@sudo apt update
+	@sudo apt install -y build-essential
 
 compile:
 	make -C dnsmasq all CFLAGS="-Wall -W -O3" LDFLAGS="-static"
