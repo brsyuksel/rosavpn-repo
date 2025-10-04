@@ -15,4 +15,5 @@ runs:
       shell: bash
       run: |
           version=`cat packages.json | jq ."${{ inputs.package }}"`
+          echo "version=$version"
           echo "version=$version" >> $GITHUB_OUTPUT
