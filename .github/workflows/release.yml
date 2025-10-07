@@ -45,8 +45,7 @@ jobs:
 
       - name: "create index"
         run: |
-          cd artifacts
-          jq -s '.' *.metadata.json > index.json
+          find artifacts/packages -maxdepth 4 -type f -name "*.metadata.json" -print0 | xargs -0 jq -s '.' > artifacts/index.json
           rm -v *.metadata.json
           cat index.json
 
