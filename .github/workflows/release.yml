@@ -46,6 +46,7 @@ jobs:
       - name: "create index"
         run: |
           find artifacts -maxdepth 4 -type f -name "*.metadata.json" -print0 | xargs -0 jq -s '.' > artifacts/index.json
+          find artifacts -maxdepth 4 -type f -name "*.metadata.json" -delete
           cat artifacts/index.json
 
       - name: "generate release tag"
