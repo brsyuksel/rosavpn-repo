@@ -47,7 +47,7 @@ jobs:
         run: |
           find artifacts/packages -maxdepth 4 -type f -name "*.metadata.json" -print0 | xargs -0 jq -s '.' > artifacts/index.json
           rm -v *.metadata.json
-          cat index.json
+          cat artifacts/index.json
 
       - name: "generate release tag"
         id: tag
