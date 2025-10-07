@@ -40,3 +40,9 @@ jobs:
         with:
           name: ${{ matrix.package }}-${{ inputs.arch }}.tar.gz
           path: packages/${{ matrix.package }}/*.tar.gz
+
+      - name: "upload package metadata"
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.package }}-${{ inputs.arch }}.metadata.json
+          path: packages/${{ matrix.package }}/*.metadata.json
