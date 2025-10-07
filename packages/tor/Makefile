@@ -9,7 +9,8 @@ ifeq ($(ARCH),)
     $(error ARCH is required.)
 endif
 
-TARBALL_NAME=tor-$(ARCH).tar.gz
+PACKAGE_NAME=tor-$(ARCH)
+TARBALL_NAME=$(PACKAGE_NAME).tar.gz
 
 get_source:
 	@git clone https://gitlab.torproject.org/tpo/core/tor.git
@@ -64,11 +65,17 @@ run_test:
 	/tmp/tor/bin/tor --version
 
 dist:
-	@mkdir -v dist
+	@mkdir -pv dist
 	@cp -v torrc dist/torrc
 	@cp -v /tmp/tor/bin/tor dist/tor
 	@echo $(VERSION) >> dist/version
 	@tar -czvf $(TARBALL_NAME) -C dist .
+
+	@TARBALL_SUM=$$(sha256sum $(TARBALL_NAME) | awk '{print $$1}'); \
+	TOR_BIN_SHA256=$$(sha256sum dist/tor | awk '{print $$1}'); \
+	TORRC_SHA256=$$(sha256sum dist/torrc | awk '{print $$1}'); \
+	printf '{"name": "tor", "archive_file": "$(TARBALL_NAME)", "archive_sum": "%s", "version": "$(VERSION)", "arch": "$(ARCH)", "file_sums": {"tor": "%s", "torrc": "%s"}}\n' \
+	"$$TARBALL_SUM" "$$TOR_BIN_SHA256" "$$TORRC_SHA256" > $(PACKAGE_NAME).metadata.json
 
 clean:
 	@rm -Rfv dist
@@ -83,3 +90,5 @@ clean:
 
 test: get_source dependencies compile run_test clean
 package: get_source dependencies compile dist clean
+
+.PHONY: dist

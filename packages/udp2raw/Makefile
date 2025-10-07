@@ -9,7 +9,8 @@ ifeq ($(ARCH),)
     $(error ARCH is required.)
 endif
 
-TARBALL_NAME=udp2raw-$(ARCH).tar.gz
+PACKAGE_NAME=udp2raw-$(ARCH)
+TARBALL_NAME=$(PACKAGE_NAME).tar.gz
 
 ifeq ($(ARCH), amd64)
 	SOURCE_BINARY=udp2raw_amd64
@@ -25,10 +26,15 @@ run_test:
 	@./$(SOURCE_BINARY) -h
 
 dist:
-	@mkdir -v dist
+	@mkdir -pv dist
 	@cp -v $(SOURCE_BINARY) dist/udp2raw
 	@echo $(VERSION) >> dist/version
 	@tar -czvf $(TARBALL_NAME) -C dist .
+
+	@TARBALL_SUM=$$(sha256sum $(TARBALL_NAME) | awk '{print $$1}'); \
+	UDP2RAW_BIN_SHA256=$$(sha256sum dist/udp2raw | awk '{print $$1}'); \
+	printf '{"name": "udp2raw", "archive_file": "$(TARBALL_NAME)", "archive_sum": "%s", "version": "$(VERSION)", "arch": "$(ARCH)", "file_sums": {"udp2raw": "%s"}}\n' \
+	"$$TARBALL_SUM" "$$UDP2RAW_BIN_SHA256" > $(PACKAGE_NAME).metadata.json
 
 clean:
 	@rm -Rfv dist
@@ -38,3 +44,5 @@ clean:
 
 test: get_binaries run_test clean
 package: get_binaries dist clean
+
+.PHONY: dist
